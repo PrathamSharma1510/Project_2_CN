@@ -3,7 +3,7 @@ import threading
 import os
 
 
-def client_handler(conn):
+def multiple_client(conn):
     try:
         data = conn.recv(1024)
         # data fetched
@@ -63,10 +63,10 @@ def start_server(port, BUFFER_SIZE):
     print("Server started. Listening on port : ", port)
     print("Waiting for the client to get connect.")
     while True:
-        client_socket, client_addr = server.accept()
-        print(f'New connection from {client_addr}')
-        t = threading.Thread(target=client_handler, args=(client_socket,))
-        t.start()
+        cli_socket, cli_addr = server.accept()
+        print(f'--------- New client connected from {cli_addr}')
+        thread = threading.Thread(target=multiple_client, args=(cli_socket,))
+        thread.start()
 
 
 if __name__ == "__main__":
